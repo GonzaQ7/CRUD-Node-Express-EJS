@@ -1,15 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const conexion = require("./database/db");
+const crud = require("./controllers/crud");
 
+//Mostrar registros
 router.get("/", (req, res) => {
   conexion.query("SELECT * FROM users", (error, results) => {
     if (error) {
       throw error;
     } else {
-      res.send(results);
+      res.render("index.ejs", { results: results });
     }
   });
 });
+
+//Crear registros
+router.get("/create", (req, res) => {
+  res.render("create.ejs");
+});
+
+router.post("/save", crud.save);
 
 module.exports = router;
